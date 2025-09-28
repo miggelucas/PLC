@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:PLC}",
+      "name": "Debug PLC",
+      "program": "${workspaceFolder:PLC}/.build/debug/PLC",
+      "preLaunchTask": "swift: Build Debug PLC"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:PLC}",
+      "name": "Release PLC",
+      "program": "${workspaceFolder:PLC}/.build/release/PLC",
+      "preLaunchTask": "swift: Build Release PLC"
+    }
+  ]
+}

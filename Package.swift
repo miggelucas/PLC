@@ -5,16 +5,25 @@ import PackageDescription
 
 let package = Package(
     name: "PLC",
+    products: [
+        .library(name: "FormulaSolver", targets: [
+            "FormulaSolver"
+        ])
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
+        .target(name: "FormulaSolver"),
+        .testTarget(name: "FormulaSolverTests",
+                    dependencies: [.target(name: "FormulaSolver")],
+                    path: "Tests/FormulaSolverTests"
+                   ),
         .executableTarget(
-            name: "PLC",
+            name: "FormulaSolverTool",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "FormulaSolver")
             ]
         ),
     ]
