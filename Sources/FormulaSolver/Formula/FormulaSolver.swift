@@ -44,11 +44,8 @@ public struct FormulaSolver: FormulaSolverProtocol {
     }
     
     public func isFormulaValid(_ formula: String) throws -> Bool {
+        // TODO: Implement validation. Should return bool or expose errors?
         return true
-    }
-    
-    private func parseFormula(_ formula: String) -> Formula? {
-        return nil
     }
 }
 
