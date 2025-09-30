@@ -11,6 +11,28 @@ enum Value {
     case number(Double)
     case string(String)
     case nestedFormula(Formula)
+    
+    var name: String {
+        switch self {
+        case .boolean: return "Boolean"
+        case .number: return "Number"
+        case .string: return "String"
+        case .nestedFormula: return "Nested Formula"
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .boolean(let bool):
+            return bool.toString()
+        case .number(let number):
+            return String(number)
+        case .string(let string):
+            return string
+        case .nestedFormula(let formula):
+            return "Formula - Operation: \(formula.operation), Arguments: \(formula.arguments)"
+        }
+    }
 }
 
 extension Value: Equatable {
