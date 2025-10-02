@@ -11,7 +11,7 @@ public protocol FormulaSolverProtocol {
     func isFormulaValid(_ formula: String) throws -> Bool
 }
 
-public struct FormulaSolver: FormulaSolverProtocol {
+public struct FormulaSolver {
     
     let parser: FormulaParserProtocol
     
@@ -22,7 +22,9 @@ public struct FormulaSolver: FormulaSolverProtocol {
     public init() {
         self.parser = FormulaParser()
     }
-    
+}
+
+extension FormulaSolver: FormulaSolverProtocol {
     public func solve(_ formula: String) throws -> String {
         let parsedFormula = try parser.parseFormula(formula)
         
@@ -30,6 +32,13 @@ public struct FormulaSolver: FormulaSolverProtocol {
         return result.description
     }
     
+    public func isFormulaValid(_ formula: String) throws -> Bool {
+        // TODO: Implement validation. Should return bool or expose errors?
+        return true
+    }
+}
+
+extension FormulaSolver {
     func solve(_ formula: Formula) throws -> Value {
         let operation = try OperationFactory.makeOperation(from: formula.operation)
         
@@ -41,11 +50,6 @@ public struct FormulaSolver: FormulaSolverProtocol {
         }
         
         return try operation.solve(arguments: solvedArguments)
-    }
-    
-    public func isFormulaValid(_ formula: String) throws -> Bool {
-        // TODO: Implement validation. Should return bool or expose errors?
-        return true
     }
 }
 

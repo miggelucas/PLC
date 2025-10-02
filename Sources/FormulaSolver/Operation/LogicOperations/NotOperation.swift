@@ -22,14 +22,14 @@ struct NotOperation: Operation {
     
     func evaluate(arguments: [Value]) -> [OperationError] {
         var errors: [OperationError] = []
-        if arguments.count == 1 {
+        if arguments.count > 1 {
             errors.append(
-                .invalidNumberOfArguments(expected: 2,
+                .invalidNumberOfArguments(expected: 1,
                                           received: arguments.count)
             )
         }
         
-        if case .boolean = arguments[0] {
+        if case .boolean = arguments[0] {} else {
             errors.append(
                 .invalidArgumentType(expected: "Boolean",
                                      received: arguments[0].name)

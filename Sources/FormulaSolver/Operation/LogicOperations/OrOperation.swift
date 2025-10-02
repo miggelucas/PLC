@@ -13,7 +13,7 @@ struct OrOperation: Operation {
             throw error
         }
         
-        let result = arguments.reduce(true) { (accumulator, nextArgument) -> Bool in
+        let result = arguments.reduce(false) { (accumulator, nextArgument) -> Bool in
             guard case .boolean(let nextValue) = nextArgument else { return accumulator }
             return accumulator || nextValue
         }

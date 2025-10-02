@@ -17,6 +17,24 @@
       "name": "Release PLC",
       "program": "${workspaceFolder:PLC}/.build/release/PLC",
       "preLaunchTask": "swift: Build Release PLC"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:PLC}",
+      "name": "Debug FST",
+      "program": "${workspaceFolder:PLC}/.build/debug/FST",
+      "preLaunchTask": "swift: Build Debug FST"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:PLC}",
+      "name": "Release FST",
+      "program": "${workspaceFolder:PLC}/.build/release/FST",
+      "preLaunchTask": "swift: Build Release FST"
     }
   ]
 }

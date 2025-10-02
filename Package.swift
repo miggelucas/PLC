@@ -20,7 +20,7 @@ let package = Package(
                     path: "Tests/FormulaSolverTests"
                    ),
         .executableTarget(
-            name: "FST",
+            name: "FST", // Formula Solver Tool
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "FormulaSolver")

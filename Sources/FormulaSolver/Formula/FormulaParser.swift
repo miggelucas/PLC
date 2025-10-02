@@ -11,15 +11,19 @@ protocol FormulaParserProtocol {
     func parseFormula(_ formula: String) throws -> Formula
 }
 
-struct FormulaParser: FormulaParserProtocol {
+struct FormulaParser {
     
-    private enum KeyChar {
+    init() {}
+    
+    enum KeyChar {
         static let openParenthesis = "("
         static let closeParenthesis = ")"
         static let parameterSeparator = ";"
         static let stringLiteral = "\""
     }
-    
+}
+
+extension FormulaParser: FormulaParserProtocol {
     func parseFormula(_ formula: String) throws -> Formula {
         let components = formula.split(separator: "(", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
         
@@ -43,8 +47,10 @@ struct FormulaParser: FormulaParserProtocol {
         
         return Formula(operation: operation, arguments: arguments)
     }
-    
-    private func parseArgument(from string: String) throws -> Value {
+}
+
+private extension FormulaParser {
+    func parseArgument(from string: String) throws -> Value {
         if let boolValue = Bool(string) {
             return .boolean(boolValue)
         }
@@ -66,7 +72,7 @@ struct FormulaParser: FormulaParserProtocol {
         return .string(string)
     }
     
-    private func splitParameters(from string: String) throws -> [String] {
+    func splitParameters(from string: String) throws -> [String] {
         var parameters: [String] = []
         var currentParameter = ""
         var parenthesisCount = 0
