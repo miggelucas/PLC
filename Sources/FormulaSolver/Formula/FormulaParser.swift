@@ -7,15 +7,6 @@
 
 import Foundation
 
-protocol FormulaParsing {
-    func parseFormula(_ formula: String) throws -> Formula
-    
-}
-
-protocol ValueParsing {
-    func parserValue(_ string: String) throws -> Value
-}
-
 
 struct FormulaParser {
     

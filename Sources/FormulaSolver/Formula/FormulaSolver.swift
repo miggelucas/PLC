@@ -6,12 +6,6 @@
 //
 
 
-public protocol FormulaSolverProtocol {
-    func solveFormula(_ formula: String, context: [String: String]) throws -> String
-    func isFormulaValid(_ formula: String) throws -> Bool
-}
-
-
 public struct FormulaSolver {
     
     typealias Parser = FormulaParsing & ValueParsing
@@ -27,7 +21,7 @@ public struct FormulaSolver {
     }
 }
 
-extension FormulaSolver: FormulaSolverProtocol {
+extension FormulaSolver: FormulaSolving {
     public func solveFormula(_ formula: String, context: [String: String] = [:]) throws -> String {
         let parsedFormula = try parser.parseFormula(formula)
         let parsedContext = try parseValues(context: context)
