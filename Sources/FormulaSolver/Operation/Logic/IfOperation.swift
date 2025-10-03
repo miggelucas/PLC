@@ -6,18 +6,17 @@
 //
 
 struct IfOperation: Operation {
-    func solve(arguments: [Value]) throws -> Value {
-        let erros = evaluate(arguments: arguments)
-        if let anyError = erros.first {
-            throw anyError
-        }
-        
+    func execute(arguments: [Value]) -> Value {
         let condition = arguments[0]
         let valueIfTrue = arguments[1]
         let valueIfFalse = arguments[2]
         
-        guard case .boolean(let isTrue) = condition else {
-            throw OperationError.invalidArgumentType(expected: Value.SelfType.boolean, received: condition.selfType)
+        var isTrue: Bool {
+            if case .boolean(let bool) = condition {
+                return bool
+            } else {
+                return false
+            }
         }
         
         return isTrue ? valueIfTrue : valueIfFalse

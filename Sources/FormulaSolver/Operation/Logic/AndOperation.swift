@@ -7,12 +7,7 @@
 
 
 struct AndOperation: Operation {
-    func solve(arguments: [Value]) throws -> Value {
-        let validationErrors = evaluate(arguments: arguments)
-        if let error = validationErrors.first {
-            throw error
-        }
-        
+    func execute(arguments: [Value]) -> Value {
         let result = arguments.reduce(true) { (accumulator, nextArgument) -> Bool in
             guard case .boolean(let nextValue) = nextArgument else { return accumulator }
             return accumulator && nextValue

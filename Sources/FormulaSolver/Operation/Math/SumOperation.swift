@@ -7,19 +7,11 @@
 
 
 struct SumOperation: Operation {
-    func solve(arguments: [Value]) throws -> Value {
-        let errors = evaluate(arguments: arguments)
-        if let erro = errors.first {
-            throw erro
+    func execute(arguments: [Value]) -> Value {
+        let result = arguments.reduce(0.0) { accumulator, nextValue in
+            guard case .number(let double) = nextValue else { return accumulator }
+            return accumulator + double
         }
-        
-        var result: Double = 0
-        arguments.forEach { value in
-            if case .number(let double) = value {
-                result = result + double
-            }
-        }
-        
         return .number(result)
     }
     

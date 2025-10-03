@@ -7,17 +7,18 @@
 
 
 struct NotOperation: Operation {
-    func solve(arguments: [Value]) throws -> Value {
-        let validationErrors = evaluate(arguments: arguments)
-        if let error = validationErrors.first {
-            throw error
+    func execute(arguments: [Value]) -> Value {
+        let argument = arguments[0]
+        
+        var boolean: Bool {
+            if case .boolean(let bool) = argument {
+                return bool
+            } else {
+                return true
+            }
         }
         
-        guard case .boolean(let value) = arguments[0] else {
-            throw OperationError.invalidArgumentType(expected: Value.SelfType.boolean, received: arguments[0].selfType)
-        }
-        
-        return .boolean(!value)
+        return .boolean(!boolean)
     }
     
     func evaluate(arguments: [Value]) -> [OperationError] {

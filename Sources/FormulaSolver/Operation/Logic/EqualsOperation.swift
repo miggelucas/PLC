@@ -7,12 +7,7 @@
 
 
 struct EqualsOperation: Operation {
-    func solve(arguments: [Value]) throws -> Value {
-        let errors = evaluate(arguments: arguments)
-        if let error = errors.first {
-            throw error
-        }
-    
+    func execute(arguments: [Value]) -> Value {
         let isEqual = arguments[0] == arguments[1]
         return .boolean(isEqual)
     }
