@@ -5,7 +5,52 @@
 //  Created by Lucas Migge on 30/09/25.
 //
 
-
+/// Operação lógica OR (OU).
+///
+/// `OrOperation` implementa a operação `OR` que retorna `TRUE` se pelo menos
+/// um dos argumentos for `TRUE`.
+///
+/// ## Sintaxe
+///
+/// ```
+/// OR(booleano1; booleano2; ...)
+/// ```
+///
+/// ## Requisitos
+///
+/// - Pelo menos 2 argumentos
+/// - Todos os argumentos devem ser booleanos
+///
+/// ## Tabela Verdade
+///
+/// | Entrada 1 | Entrada 2 | Resultado |
+/// |-----------|-----------|-----------|
+/// | TRUE      | TRUE      | TRUE      |
+/// | TRUE      | FALSE     | TRUE      |
+/// | FALSE     | TRUE      | TRUE      |
+/// | FALSE     | FALSE     | FALSE     |
+///
+/// ## Exemplos
+///
+/// ```swift
+/// // Pelo menos um verdadeiro
+/// OR(TRUE; FALSE) → TRUE
+///
+/// // Todos falsos
+/// OR(FALSE; FALSE) → FALSE
+///
+/// // Múltiplos argumentos
+/// OR(FALSE; FALSE; TRUE) → TRUE
+///
+/// // Com comparações
+/// OR(EQ(5; 10); EQ(10; 10)) → TRUE
+/// ```
+///
+/// ## Tópicos
+///
+/// ### Implementação
+/// - ``execute(arguments:)``
+/// - ``evaluate(arguments:)``
 struct OrOperation: Operation {
     func execute(arguments: [Value]) -> Value {        
         let result = arguments.reduce(false) { (accumulator, nextArgument) -> Bool in
