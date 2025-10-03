@@ -7,7 +7,7 @@
 
 
 enum OperationError: Error {
-    case invalidArgumentType(expected: String, received: String)
+    case invalidArgumentType(expected: Value.SelfType, received: Value.SelfType)
     case invalidNumberOfArguments(expected: Int, received: Int)
     case unknownOperation
 }

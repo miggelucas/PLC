@@ -8,6 +8,7 @@
 struct Formula {
     let operation: String
     let arguments: [Value]
+    
 }
 
 extension Formula: Equatable {

@@ -24,7 +24,7 @@ struct Solve: ParsableCommand {
         let solver = FormulaSolver()
         
         do {
-            let result = try solver.solve(formulaString)
+            let result = try solver.solveFormula(formulaString)
             print("✅ Resultado: \(result)")
         } catch {
             print("❌ Erro ao calcular: \(error.localizedDescription)")

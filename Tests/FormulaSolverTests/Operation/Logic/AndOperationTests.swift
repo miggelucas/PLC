@@ -1,19 +1,21 @@
 //
-//  OrOperationTests.swift
+//  AndOperationTests.swift
 //  PLC
 //
-//  Created by Lucas Migge on 01/10/25.
+//  Created by Lucas Migge on 30/09/25.
 //
 
 import Testing
 @testable import FormulaSolver
 
-class OrOperationTests {
-    let operation = OrOperation()
+@Suite("AndOperation Tests")
+class AndOperationTests {
+    
+    let operation = AndOperation()
     
     // MARK: - Evaluate testing
     @Suite("Evaluate")
-    final class EvaluateTests: OrOperationTests {
+    final class EvaluateTests: AndOperationTests {
         
         @Test("Should return error of argument count if less than two arguments")
         func evaluate_whenGivenLessThanTwoArguments_shouldReturnInvalidArgumentCountError() {
@@ -32,7 +34,7 @@ class OrOperationTests {
             let errors = operation.evaluate(arguments: arguments)
             
             #expect(errors.count == 1)
-            #expect(errors.first == .invalidArgumentType(expected: "Boolean", received: "Number"))
+            #expect(errors.first == .invalidArgumentType(expected: .boolean, received: .number))
         }
         
         @Test("Should return empty array for valid arguments")
@@ -47,24 +49,24 @@ class OrOperationTests {
     
     // MARK: - Solve Testing
     @Suite("Solve")
-    final class SolveTests: OrOperationTests {
+    final class SolveTests: AndOperationTests {
         
-        @Test("Should return true if any argument is true")
+        @Test("Should return false if any argument is false")
         func solve_whenAnyArgumentIsFalse_shouldReturnFalse() throws {
-            let arguments: [Value] = [.boolean(true), .boolean(false), .boolean(false)]
-            
-            let result = try operation.solve(arguments: arguments)
-            
-            #expect(result == .boolean(true))
-        }
-        
-        @Test("Should return false if all arguments are false")
-        func solve_whenAllArgumentsAreTrue_shouldReturnTrue() throws {
-            let arguments: [Value] = [.boolean(false), .boolean(false)]
+            let arguments: [Value] = [.boolean(true), .boolean(false), .boolean(true)]
             
             let result = try operation.solve(arguments: arguments)
             
             #expect(result == .boolean(false))
+        }
+        
+        @Test("Should return true if all arguments are true")
+        func solve_whenAllArgumentsAreTrue_shouldReturnTrue() throws {
+            let arguments: [Value] = [.boolean(true) , .boolean(true)]
+            
+            let result = try operation.solve(arguments: arguments)
+            
+            #expect(result == .boolean(true))
         }
         
         @Test("Should throw error if given one argument")
@@ -85,5 +87,4 @@ class OrOperationTests {
             }
         }
     }
-    
 }

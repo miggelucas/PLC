@@ -31,7 +31,7 @@ struct OrOperation: Operation {
         arguments.forEach {
             if case .boolean = $0 {
             } else {
-                errors.append(.invalidArgumentType(expected: "Boolean", received: $0.name))
+                errors.append(.invalidArgumentType(expected: Value.SelfType.boolean, received: $0.selfType))
             }
         }
         return errors

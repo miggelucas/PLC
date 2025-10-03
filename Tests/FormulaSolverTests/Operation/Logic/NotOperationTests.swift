@@ -34,7 +34,7 @@ class NotOperationTests {
             let errors = operation.evaluate(arguments: arguments)
             
             #expect(errors.count == 1)
-            #expect(errors.first == .invalidArgumentType(expected: "Boolean", received: "Number"))
+            #expect(errors.first == .invalidArgumentType(expected: Value.SelfType.boolean, received: Value.SelfType.number))
         }
         
         @Test("Should return empty array for valid arguments")

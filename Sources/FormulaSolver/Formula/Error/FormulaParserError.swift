@@ -11,4 +11,5 @@ enum FormulaParserError: Error {
     case unknownOperation
     case missingParameters
     case unbalancedParentheses
+    case unknownReference(String)
 }

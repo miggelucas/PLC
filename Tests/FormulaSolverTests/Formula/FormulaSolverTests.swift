@@ -16,7 +16,7 @@ struct FormulaSolverTests {
     func solveSimpleFormulas() async throws {
         let expression = "AND(TRUE; TRUE)"
         
-        let result = try solver.solve(expression)
+        let result = try solver.solveFormula(expression)
         
         #expect(result == "TRUE")
     }
@@ -25,8 +25,45 @@ struct FormulaSolverTests {
     func solveMoreComplexFormulas() async throws {
         let expression = "AND(FALSE; OR(FALSE; TRUE))"
         
-        let result = try solver.solve(expression)
+        let result = try solver.solveFormula(expression)
         
         #expect(result == "FALSE")
+    }
+    
+    @Test("Should solve simple formulas with context")
+    func solveSimpleFormulasWithContext() async throws {
+        let context = ["foo": "TRUE"]
+        
+        let expression = "AND(foo; foo)"
+        
+        let result = try solver.solveFormula(expression, context: context)
+        
+        #expect(result == "TRUE")
+    }
+    
+    @Test("should solve simple aritimet formula")
+    func solveSimpleAritimetFormula() async throws {
+        let expression = "SUM(1; 4)"
+        
+        let result = try solver.solveFormula(expression)
+        
+        #expect(result == "5.0")
+    }
+    
+    @Test("Should solve complex formulas with context")
+    func solveComplexFormulasWithContext() async throws {
+        let context: [String: String] = [
+            "isMale": "TRUE",
+            "hasCar": "FALSE",
+            "age": "25",
+            "A1": "25",
+            "B3": "TRUE"
+        ]
+        
+        let expression = "AND(OR(B3; hasCar); EQ(A1; 25))"
+        
+        let result = try solver.solveFormula(expression, context: context)
+        
+        #expect(result == "TRUE")
     }
 }

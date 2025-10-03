@@ -14,7 +14,7 @@ struct NotOperation: Operation {
         }
         
         guard case .boolean(let value) = arguments[0] else {
-            throw OperationError.invalidArgumentType(expected: "Boolean", received: arguments[0].name)
+            throw OperationError.invalidArgumentType(expected: Value.SelfType.boolean, received: arguments[0].selfType)
         }
         
         return .boolean(!value)
@@ -31,8 +31,8 @@ struct NotOperation: Operation {
         
         if case .boolean = arguments[0] {} else {
             errors.append(
-                .invalidArgumentType(expected: "Boolean",
-                                     received: arguments[0].name)
+                .invalidArgumentType(expected: Value.SelfType.boolean,
+                                     received: arguments[0].selfType)
             )
         }
         

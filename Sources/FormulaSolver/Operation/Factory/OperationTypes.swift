@@ -11,6 +11,11 @@ enum OperationTypes: String {
     case not = "NOT"
     case and = "AND"
     case or = "OR"
+    case condition = "IF"
+    case equals = "EQ"
+    
+    // math
+    case sum = "SUM"
     
     var operation: Operation {
         switch self {
@@ -20,6 +25,15 @@ enum OperationTypes: String {
             return AndOperation()
         case .or:
             return OrOperation()
+        case .condition:
+            return IfOperation()
+        case .equals:
+            return EqualsOperation()
+        case .sum:
+            return SumOperation()
+            
         }
     }
 }
+
+

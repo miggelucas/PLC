@@ -7,14 +7,20 @@
 
 import Foundation
 
-protocol FormulaParserProtocol {
+protocol FormulaParsing {
     func parseFormula(_ formula: String) throws -> Formula
+    
 }
+
+protocol ValueParsing {
+    func parserValue(_ string: String) throws -> Value
+}
+
 
 struct FormulaParser {
     
     init() {}
-    
+
     enum KeyChar {
         static let openParenthesis = "("
         static let closeParenthesis = ")"
@@ -23,7 +29,7 @@ struct FormulaParser {
     }
 }
 
-extension FormulaParser: FormulaParserProtocol {
+extension FormulaParser: FormulaParsing {
     func parseFormula(_ formula: String) throws -> Formula {
         let components = formula.split(separator: "(", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
         
@@ -39,7 +45,7 @@ extension FormulaParser: FormulaParserProtocol {
         
         let parameterStrings = try splitParameters(from: parametersContent)
         
-        let arguments = try parameterStrings.map { try parseArgument(from: $0) }
+        let arguments = try parameterStrings.map { try parserValue($0) }
         
         guard !arguments.isEmpty else {
             throw FormulaParserError.missingParameters
@@ -49,8 +55,8 @@ extension FormulaParser: FormulaParserProtocol {
     }
 }
 
-private extension FormulaParser {
-    func parseArgument(from string: String) throws -> Value {
+extension FormulaParser: ValueParsing {
+    func parserValue(_ string: String) throws -> Value {
         if let boolValue = Bool(string) {
             return .boolean(boolValue)
         }
@@ -69,9 +75,11 @@ private extension FormulaParser {
             return .nestedFormula(try parseFormula(string))
         }
         
-        return .string(string)
+        return .reference(string)
     }
-    
+}
+
+private extension FormulaParser {
     func splitParameters(from string: String) throws -> [String] {
         var parameters: [String] = []
         var currentParameter = ""
