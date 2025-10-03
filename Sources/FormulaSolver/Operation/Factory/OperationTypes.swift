@@ -5,7 +5,22 @@
 //  Created by Lucas Migge on 30/09/25.
 //
 
-
+/// Enumera todos os tipos de operações disponíveis.
+///
+/// `OperationTypes` mapeia nomes de operações para suas implementações concretas.
+/// É usado pelo `OperationFactory` para instanciar operações.
+///
+/// ## Operações Lógicas
+///
+/// - `not`: Operação NOT (negação)
+/// - `and`: Operação AND (conjunção)
+/// - `or`: Operação OR (disjunção)
+/// - `condition`: Operação IF (condicional)
+/// - `equals`: Operação EQ (igualdade)
+///
+/// ## Operações Matemáticas
+///
+/// - `sum`: Operação SUM (soma)
 enum OperationTypes: String {
     // Logic
     case not = "NOT"

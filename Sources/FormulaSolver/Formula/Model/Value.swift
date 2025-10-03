@@ -5,14 +5,82 @@
 //  Created by Lucas Barros on 27/09/25.
 //
 
-
+/// Representa um valor que pode ser usado em fórmulas.
+///
+/// `Value` é um enum que encapsula os diferentes tipos de dados suportados
+/// pelo sistema de fórmulas. Cada valor pode ser um tipo primitivo ou uma
+/// estrutura mais complexa como fórmulas aninhadas ou referências.
+///
+/// ## Visão Geral
+///
+/// Os tipos de valores suportados são:
+/// - **Boolean**: Valores lógicos (`TRUE` ou `FALSE`)
+/// - **Number**: Valores numéricos (inteiros ou decimais)
+/// - **String**: Texto literal entre aspas duplas
+/// - **NestedFormula**: Uma fórmula completa que será resolvida primeiro
+/// - **Reference**: Nome de uma variável do contexto
+///
+/// ## Exemplo de Parsing
+///
+/// ```swift
+/// // Boolean
+/// "TRUE"  → Value.boolean(true)
+///
+/// // Number
+/// "42"    → Value.number(42.0)
+///
+/// // String
+/// "\"hello\"" → Value.string("hello")
+///
+/// // Reference
+/// "idade" → Value.reference("idade")
+///
+/// // Nested Formula
+/// "SUM(1; 2)" → Value.nestedFormula(Formula(...))
+/// ```
+///
+/// ## Tópicos
+///
+/// ### Casos do Enum
+/// - ``boolean(_:)``
+/// - ``number(_:)``
+/// - ``string(_:)``
+/// - ``nestedFormula(_:)``
+/// - ``reference(_:)``
+///
+/// ### Propriedades
+/// - ``name``
+/// - ``description``
+/// - ``selfType``
 enum Value {
+    /// Um valor booleano.
+    ///
+    /// Representa `TRUE` ou `FALSE` em uma fórmula.
     case boolean(Bool)
+    
+    /// Um valor numérico.
+    ///
+    /// Armazena números como `Double` para suportar inteiros e decimais.
     case number(Double)
+    
+    /// Um valor de texto.
+    ///
+    /// Strings literais são delimitadas por aspas duplas na fórmula.
     case string(String)
+    
+    /// Uma fórmula aninhada.
+    ///
+    /// Permite que fórmulas sejam usadas como argumentos de outras fórmulas.
     case nestedFormula(Formula)
+    
+    /// Uma referência a uma variável.
+    ///
+    /// O nome da variável será resolvido usando o contexto fornecido.
     case reference(String)
     
+    /// O nome do tipo do valor.
+    ///
+    /// Retorna uma string descritiva do tipo (ex: "Boolean", "Number").
     var name: String {
         switch self {
         case .boolean: return "Boolean"
@@ -23,6 +91,10 @@ enum Value {
         }
     }
     
+    /// Descrição textual do valor.
+    ///
+    /// Converte o valor de volta para uma representação em string.
+    /// Booleanos são convertidos para "TRUE"/"FALSE".
     var description: String {
         switch self {
         case .boolean(let bool):
@@ -62,10 +134,16 @@ extension Value: Equatable {
 }
 
 extension Value {
+    /// Tipos disponíveis para valores em fórmulas.
+    ///
+    /// Usado internamente para validação de tipos em operações.
     enum SelfType {
         case string, number, boolean, nestedFormula, reference, unknown
     }
     
+    /// O tipo deste valor.
+    ///
+    /// Retorna o `SelfType` correspondente a este valor.
     var selfType: SelfType {
         switch self {
         case .boolean:

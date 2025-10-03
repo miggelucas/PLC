@@ -7,11 +7,44 @@
 
 import Foundation
 
-
+/// Parser que converte strings em estruturas de fórmula.
+///
+/// `FormulaParser` implementa os protocolos `FormulaParsing` e `ValueParsing`
+/// para analisar fórmulas e valores.
+///
+/// ## Visão Geral
+///
+/// O parser é capaz de:
+/// - Identificar operações e extrair argumentos
+/// - Processar fórmulas aninhadas
+/// - Detectar tipos de valores (números, booleanos, strings)
+/// - Lidar com parênteses balanceados
+/// - Processar referências a variáveis
+///
+/// ## Formato de Fórmulas
+///
+/// ```
+/// OPERACAO(arg1; arg2; ...)
+/// ```
+///
+/// ## Separadores e Caracteres Especiais
+///
+/// - Argumentos são separados por `;`
+/// - Strings literais usam `"`
+/// - Fórmulas aninhadas usam `(` e `)`
+///
+/// ## Exemplo de Uso Interno
+///
+/// ```swift
+/// let parser = FormulaParser()
+/// let formula = try parser.parseFormula("SUM(1; 2; 3)")
+/// // Formula(operation: "SUM", arguments: [.number(1), .number(2), .number(3)])
+/// ```
 struct FormulaParser {
     
     init() {}
 
+    /// Caracteres-chave usados no parsing.
     enum KeyChar {
         static let openParenthesis = "("
         static let closeParenthesis = ")"
