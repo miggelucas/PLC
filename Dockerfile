@@ -33,7 +33,7 @@ RUN apt-get update && \
     libatomic1 \
     libcurl4 \
     libxml2 \
-    libicu70 \
+    libicu-dev libicu70 \
     libssl3 && \
     rm -rf /var/lib/apt/lists/*
 
