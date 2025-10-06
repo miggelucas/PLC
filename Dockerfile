@@ -1,32 +1,33 @@
-# --- ESTÁGIO 1: Builder ---
+# Dockerfile para uma CLI em Swift usando multi-stage build.
+
+# --- ESTÁGIO 1: Ambiente de Build ---
+# Utiliza a imagem oficial do Swift, que contém todo o SDK necessário para compilação.
 FROM swift:6.0-jammy AS builder
 
-# Define o diretório de trabalho dentro do contêiner
+# Define o diretório de trabalho padrão.
 WORKDIR /app
 
-# Copia os arquivos de manifesto primeiro para aproveitar o cache do Docker.
-# O build só será refeito se esses arquivos mudarem.
+# Copia os manifestos do pacote para otimizar o cache de layers do Docker.
+# As dependências só serão baixadas novamente se estes arquivos mudarem.
 COPY Package.swift Package.resolved ./
 
-# Resolve as dependências do projeto
+# Resolve e baixa as dependências do Swift Package Manager.
 RUN swift package resolve
 
-# Copia todo o resto do código-fonte
+# Copia o restante do código-fonte para o contêiner.
 COPY . .
 
-# Compila o projeto em modo "release" para otimização e performance.
-# O executável será criado em .build/release/
+# Compila o executável em modo 'release' para máxima otimização.
 RUN swift build -c release
 
-# --- ESTÁGIO 2: Runner ---
-# Começamos com uma imagem base limpa e leve do Ubuntu.
+# --- ESTÁGIO 2: Ambiente de Execução ---
+# Utiliza uma imagem base do Ubuntu para a imagem final, resultando em um tamanho menor.
 FROM ubuntu:22.04
 
-# Define o diretório de trabalho
+# Define o diretório de trabalho para o ambiente de execução.
 WORKDIR /app
 
-# Instala as dependências de runtime do Swift.
-# Isso garante que todas as bibliotecas .so necessárias estejam presentes.
+# Instala as shared libraries de sistema que são dependências do Swift runtime.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libatomic1 \
@@ -34,20 +35,18 @@ RUN apt-get update && \
     libxml2 \
     libicu70 \
     libssl3 && \
-    rm -rf /var/lib/apt/lists
+    rm -rf /var/lib/apt/lists/*
 
-# Copia as bibliotecas de runtime do Swift do estágio de build.
-# Isso é mais confiável do que instalá-las separadamente.
+# Copia as bibliotecas de runtime específicas do Swift a partir do estágio de build.
 COPY --from=builder /usr/lib/swift/linux/*.so* /usr/lib/swift/linux/
 
-# --- Ponto crucial: Copia APENAS o binário compilado do estágio builder ---
-# Substitua "NomeDoSeuExecutavel" pelo nome do seu target executável
-# Você pode encontrar esse nome no seu arquivo Package.swift, na seção `executableTarget(name: "...")`
+# Copia apenas o binário compilado do estágio de build para a imagem final.
 COPY --from=builder /app/.build/release/FST .
 
-# Define o comando que será executado quando o contêiner iniciar.
-# O contêiner se comportará exatamente como o seu executável.
+# Define o executável como o entrypoint do contêiner, permitindo que a imagem
+# seja tratada como o próprio executável.
 ENTRYPOINT ["./FST"]
 
-# (Opcional) Define um comando padrão, como mostrar a ajuda.
+# Define um comando padrão a ser executado se nenhum for fornecido ao 'docker run'.
+# É uma boa prática exibir a mensagem de ajuda.
 CMD ["--help"]
