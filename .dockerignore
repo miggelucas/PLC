@@ -1,0 +1,7 @@
+# Ignora a pasta de build do Swift
+.build
+
+# Ignora arquivos do Git e Xcode
+.git
+.swiftpm
+*.xcodeproj
